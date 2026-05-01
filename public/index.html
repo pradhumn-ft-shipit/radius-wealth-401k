@@ -274,7 +274,10 @@
 
               <div class="field">
                 <label for="calc-assets">Estimated total plan assets (USD)</label>
-                <input id="calc-assets" type="number" inputmode="decimal" min="0" max="500000000" step="1000" value="1200000" data-calc-input="planAssets">
+                <div class="field__currency">
+                  <span class="field__currency-prefix" aria-hidden="true">$</span>
+                  <input id="calc-assets" type="text" inputmode="numeric" autocomplete="off" value="1,200,000" data-calc-input="planAssets" data-format="currency">
+                </div>
                 <p class="field__hint">If you don't have a plan yet, leave at $0.</p>
               </div>
 
@@ -302,7 +305,10 @@
                 <summary>Advanced — average employee compensation</summary>
                 <div class="field" style="margin-top: 12px;">
                   <label for="calc-avgcomp">Average employee compensation (USD)</label>
-                  <input id="calc-avgcomp" type="number" inputmode="decimal" min="20000" max="500000" step="1000" value="75000" data-calc-input="avgComp">
+                  <div class="field__currency">
+                    <span class="field__currency-prefix" aria-hidden="true">$</span>
+                    <input id="calc-avgcomp" type="text" inputmode="numeric" autocomplete="off" value="75,000" data-calc-input="avgComp" data-format="currency">
+                  </div>
                   <p class="field__hint">Used only to refine the SECURE 2.0 contribution credit estimate.</p>
                 </div>
               </details>
@@ -312,28 +318,32 @@
               </button>
             </div>
 
-            <aside class="calc-results" data-calc-results aria-live="polite">
-              <p class="calc-results__eyebrow">Estimated annual savings</p>
-              <p class="calc-results__big" data-calc-output="annualSavings">$0</p>
-              <p class="calc-results__sub" data-calc-edge>Based on industry-average benchmarks and the inputs above. A formal review will confirm actual numbers.</p>
+            <aside class="calc-results" data-calc-results aria-live="polite" data-state="empty">
+              <p class="calc-results__eyebrow" data-calc-eyebrow>Find your number</p>
+              <p class="calc-results__big" data-calc-output="annualSavings">—</p>
+              <p class="calc-results__sub" data-calc-edge>Fill in the fields and click <strong>See my results</strong> to estimate your savings — and the SECURE 2.0 credits you may qualify for.</p>
 
               <div class="stat-cards">
                 <div class="stat-card">
                   <p class="stat-card__label">10-year cumulative savings</p>
-                  <p class="stat-card__value" data-calc-output="tenYearSavings">$0</p>
+                  <p class="stat-card__value" data-calc-output="tenYearSavings">—</p>
                   <p class="stat-card__note">Flat extrapolation, not compounded.</p>
                 </div>
                 <div class="stat-card">
                   <p class="stat-card__label">SECURE 2.0 credits — estimate</p>
-                  <p class="stat-card__value" data-calc-output="secure2CreditEstimate">$0</p>
+                  <p class="stat-card__value" data-calc-output="secure2CreditEstimate">—</p>
                   <p class="stat-card__note">Eligibility depends on IRS rules.</p>
                 </div>
                 <div class="stat-card">
                   <p class="stat-card__label">Your fees today</p>
-                  <p class="stat-card__value" data-calc-output="currentFeeShare">0.00%</p>
+                  <p class="stat-card__value" data-calc-output="currentFeeShare">—</p>
                   <p class="stat-card__note">Of plan assets, all-in.</p>
                 </div>
               </div>
+
+              <p class="calc-results__convenience" data-calc-convenience hidden>
+                And the savings is only half the story — Radius runs the plan end-to-end: design, compliance, investment management, and employee education. One team, one point of contact, no software-and-a-phone-number routing.
+              </p>
 
               <div class="calc-results__cta">
                 <button type="button" class="btn btn--primary" data-cta data-cta-intent="schedule" data-cta-source="calc-result">
@@ -452,8 +462,8 @@
         <p class="footer-heading">Firm</p>
         <ul>
           <li><a href="#about">About &amp; Our Team</a></li>
-          <li><a href="#" rel="nofollow">Form CRS</a></li>
-          <li><a href="#" rel="nofollow">Form ADV Part 2 (on request)</a></li>
+          <li><a href="https://radiuswealth.com/crs" target="_blank" rel="noopener noreferrer">Form CRS</a></li>
+          <li><button type="button" class="footer-link" data-cta data-cta-intent="schedule" data-cta-source="footer-adv">Form ADV Part 2 (on request)</button></li>
         </ul>
       </div>
       <div>

@@ -13,6 +13,20 @@
 const FALLBACK_PRIMARY_RECIPIENT = "pradhumn@fasttrackr.ai";
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
+// Free / personal email providers — rejected so the form only captures
+// work emails. Mirrored on the client for fast feedback; this set is the
+// source of truth.
+const FREE_EMAIL_DOMAINS = new Set([
+  "gmail.com", "googlemail.com",
+  "yahoo.com", "yahoo.co.uk", "yahoo.co.in", "ymail.com",
+  "hotmail.com", "hotmail.co.uk", "live.com", "msn.com", "outlook.com",
+  "aol.com", "icloud.com", "me.com", "mac.com",
+  "protonmail.com", "proton.me", "pm.me",
+  "mail.com", "gmx.com", "gmx.us", "yandex.com", "yandex.ru",
+  "zoho.com", "fastmail.com", "tutanota.com", "tuta.io",
+  "qq.com", "163.com", "126.com", "sina.com",
+]);
+
 export async function onRequest(context) {
   const { request, env } = context;
 
@@ -118,6 +132,8 @@ function validate({ name, email, company, intent }) {
   if (!isNonEmptyString(email) || email.length > 200) return "invalid_email";
   // Lightweight email regex — boundary validation, real check happens at send time.
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "invalid_email";
+  const domain = email.slice(email.lastIndexOf("@") + 1).toLowerCase();
+  if (FREE_EMAIL_DOMAINS.has(domain)) return "free_email_not_allowed";
   return null;
 }
 

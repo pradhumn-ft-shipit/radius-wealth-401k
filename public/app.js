@@ -13,8 +13,28 @@
   const STORAGE_KEY = "radius401k.lead";
   const CALC_INPUTS_KEY = "radius401k.calcInputs";
   const RADIUS_FEE_PCT = 0.0065;          // TODO: confirm with Christian before launch
+  const INDUSTRY_FEE_PCT = 0.0118;        // industry-average benchmark for $0-assets case
+  const ASSETS_PER_EMPLOYEE_BENCHMARK = 50000; // rough industry estimate for hypothetical plan size
   const TURNSTILE_SITEKEY = (document.querySelector('meta[name="turnstile-sitekey"]')?.content || "").trim();
   const CALENDLY_URL = (document.querySelector('meta[name="calendly-url"]')?.content || "").trim();
+
+  // Free / personal email providers — rejected to ensure work-email-only B2B leads.
+  const FREE_EMAIL_DOMAINS = new Set([
+    "gmail.com", "googlemail.com",
+    "yahoo.com", "yahoo.co.uk", "yahoo.co.in", "ymail.com",
+    "hotmail.com", "hotmail.co.uk", "live.com", "msn.com", "outlook.com",
+    "aol.com", "icloud.com", "me.com", "mac.com",
+    "protonmail.com", "proton.me", "pm.me",
+    "mail.com", "gmx.com", "gmx.us", "yandex.com", "yandex.ru",
+    "zoho.com", "fastmail.com", "tutanota.com", "tuta.io",
+    "qq.com", "163.com", "126.com", "sina.com",
+  ]);
+
+  function isFreeEmail(email) {
+    const at = String(email || "").lastIndexOf("@");
+    if (at < 0) return false;
+    return FREE_EMAIL_DOMAINS.has(email.slice(at + 1).toLowerCase());
+  }
 
   // ---------- utilities ----------
 
@@ -115,6 +135,10 @@
         showError(errEl, "That email address doesn't look right.");
         return;
       }
+      if (isFreeEmail(email)) {
+        showError(errEl, "Please use your work email — gmail, yahoo, outlook etc. aren't accepted here.");
+        return;
+      }
 
       const submitBtn = form.querySelector('button[type="submit"]');
       submitBtn.disabled = true;
@@ -145,7 +169,10 @@
         completeIntent(intent, source, lead, button, host);
       } catch (err) {
         console.error("Gate submit failed:", err);
-        showError(errEl, "Something went wrong. Please try again, or call us directly at 617-765-2200.");
+        const msg = err && err.message === "free_email_not_allowed"
+          ? "Please use your work email — gmail, yahoo, outlook etc. aren't accepted here."
+          : "Something went wrong. Please try again, or call us directly at 617-765-2200.";
+        showError(errEl, msg);
         submitBtn.disabled = false;
         submitBtn.textContent = "Continue";
       }
@@ -187,13 +214,17 @@
 
   // ---------- calculator ----------
 
+  function parseNumeric(s) {
+    return parseFloat(String(s || "").replace(/[^0-9.\-]/g, "")) || 0;
+  }
+
   function readInputs() {
-    const employees = clamp(parseFloat($('[data-calc-input="employees"]').value) || 0, 0, 999999);
-    const planAssets = clamp(parseFloat($('[data-calc-input="planAssets"]').value) || 0, 0, 1e10);
+    const employees = clamp(parseNumeric($('[data-calc-input="employees"]').value), 0, 999999);
+    const planAssets = clamp(parseNumeric($('[data-calc-input="planAssets"]').value), 0, 1e10);
     const currentFeeRaw = parseFloat($('[data-calc-input="currentFeePct"]').value) || 0;
     const currentFeePct = clamp(currentFeeRaw / 100, 0, 0.05);
     const hasPlan = $('[data-calc-input="hasPlan"]:checked')?.value === "yes";
-    const avgComp = clamp(parseFloat($('[data-calc-input="avgComp"]').value) || 0, 0, 1e7);
+    const avgComp = clamp(parseNumeric($('[data-calc-input="avgComp"]').value), 0, 1e7);
     return { employees, planAssets, currentFeePct, hasPlan, avgComp };
   }
 
@@ -201,12 +232,27 @@
 
   function compute(inputs) {
     const { employees, planAssets, currentFeePct, hasPlan, avgComp } = inputs;
-    const currentAnnualFee = planAssets * currentFeePct;
-    const radiusAnnualFee = planAssets * RADIUS_FEE_PCT;
+
+    // If the user has $0 plan assets, fall back to a hypothetical-plan-size
+    // estimate based on headcount. That way the result panel says something
+    // useful instead of "$0 savings."
+    const isHypothetical = planAssets <= 0 && employees > 0;
+    const effectiveAssets = isHypothetical
+      ? employees * ASSETS_PER_EMPLOYEE_BENCHMARK
+      : planAssets;
+    const effectiveFeePct = isHypothetical ? INDUSTRY_FEE_PCT : currentFeePct;
+
+    const currentAnnualFee = effectiveAssets * effectiveFeePct;
+    const radiusAnnualFee = effectiveAssets * RADIUS_FEE_PCT;
     const annualSavings = Math.max(0, currentAnnualFee - radiusAnnualFee);
     const tenYearSavings = annualSavings * 10;
     const secure2CreditEstimate = secure2Credits({ employees, hasPlan, avgComp });
-    return { currentAnnualFee, radiusAnnualFee, annualSavings, tenYearSavings, secure2CreditEstimate };
+    return {
+      currentAnnualFee, radiusAnnualFee,
+      annualSavings, tenYearSavings,
+      secure2CreditEstimate,
+      hypotheticalAssets: isHypothetical ? effectiveAssets : null,
+    };
   }
 
   function secure2Credits({ employees, hasPlan, avgComp }) {
@@ -237,11 +283,19 @@
   }
 
   function render(inputs, outputs, opts = {}) {
+    const results = $("[data-calc-results]");
+    const eyebrow = $("[data-calc-eyebrow]");
     const big = $('[data-calc-output="annualSavings"]');
     const ten = $('[data-calc-output="tenYearSavings"]');
     const cred = $('[data-calc-output="secure2CreditEstimate"]');
     const share = $('[data-calc-output="currentFeeShare"]');
     const sub = $('[data-calc-edge]');
+    const convenience = $("[data-calc-convenience]");
+
+    results.setAttribute("data-state", "filled");
+    eyebrow.textContent = outputs.hypotheticalAssets
+      ? "Estimated annual savings (typical plan your size)"
+      : "Estimated annual savings";
 
     if (opts.animate) {
       animateNumber(big, outputs.annualSavings, formatCurrency);
@@ -252,16 +306,27 @@
       ten.textContent = formatCurrency(outputs.tenYearSavings);
       cred.textContent = formatCurrency(outputs.secure2CreditEstimate);
     }
-    share.textContent = formatPercent2(inputs.currentFeePct);
+    // Show the actual fee % when known; show industry benchmark for hypothetical case.
+    share.textContent = outputs.hypotheticalAssets
+      ? `${formatPercent2(INDUSTRY_FEE_PCT)} (industry avg)`
+      : formatPercent2(inputs.currentFeePct);
 
-    // Edge case: zero or negative implied savings.
-    if (outputs.annualSavings <= 0 && inputs.planAssets > 0) {
+    // Sub-line copy varies by case.
+    if (outputs.hypotheticalAssets) {
+      sub.innerHTML = `For ${formatInt(inputs.employees)} employees, a typical small-business plan holds around <strong>${formatCurrency(outputs.hypotheticalAssets)}</strong> in assets at the industry-average fee. That's the baseline used here. The bigger number for you may be the SECURE 2.0 credits — see below.`;
+    } else if (outputs.annualSavings <= 0 && inputs.planAssets > 0) {
       sub.textContent = "Your current plan fees appear competitive against industry benchmarks. A formal review can confirm — and we can still help with plan design, compliance, and tax credits.";
-    } else if (inputs.planAssets === 0 && !inputs.hasPlan) {
-      sub.textContent = "You don't have a plan yet, so there are no current fees to compare. The number to focus on is the SECURE 2.0 credits — the IRS may underwrite most of your plan's first three years.";
     } else {
       sub.textContent = "Based on industry-average benchmarks and the inputs above. A formal review will confirm actual numbers.";
     }
+
+    // Convenience message — "savings + we run it for you."
+    if (convenience) convenience.hidden = false;
+  }
+
+  function formatInt(n) {
+    const v = Math.round(Number(n) || 0);
+    return v.toLocaleString("en-US");
   }
 
   function animateNumber(el, target, fmt) {
@@ -286,14 +351,14 @@
     try { saved = JSON.parse(sessionStorage.getItem(CALC_INPUTS_KEY) || "null"); } catch {}
     if (!saved) return;
     if (saved.employees !== undefined) $('[data-calc-input="employees"]').value = saved.employees;
-    if (saved.planAssets !== undefined) $('[data-calc-input="planAssets"]').value = saved.planAssets;
+    if (saved.planAssets !== undefined) $('[data-calc-input="planAssets"]').value = Number(saved.planAssets || 0).toLocaleString("en-US");
     if (saved.currentFeePct !== undefined) $('[data-calc-input="currentFeePct"]').value = (saved.currentFeePct * 100).toFixed(2);
     if (saved.hasPlan !== undefined) {
       const v = saved.hasPlan ? "yes" : "no";
       const radio = $(`[data-calc-input="hasPlan"][value="${v}"]`);
       if (radio) radio.checked = true;
     }
-    if (saved.avgComp !== undefined) $('[data-calc-input="avgComp"]').value = saved.avgComp;
+    if (saved.avgComp !== undefined) $('[data-calc-input="avgComp"]').value = Number(saved.avgComp || 0).toLocaleString("en-US");
   }
 
   function checkEmployeeCap() {
@@ -316,25 +381,22 @@
     if (!calc) return;
 
     restoreInputs();
+    setupCurrencyFormatters();
 
-    const recalc = () => {
-      if (checkEmployeeCap()) return;
-      const inputs = readInputs();
-      const outputs = compute(inputs);
-      render(inputs, outputs, { animate: false });
-      persistInputs(inputs);
-    };
-
-    const debounced = debounce(recalc, 300);
+    // Whenever inputs change we just check the cap and persist for sessionStorage —
+    // results are NOT rendered until the user explicitly clicks "See my results".
+    // This keeps the email #2 capture tied to an explicit action.
+    const onInputChange = debounce(() => {
+      checkEmployeeCap();
+      persistInputs(readInputs());
+    }, 300);
     $$("[data-calc-input]").forEach((el) => {
-      el.addEventListener("input", debounced);
-      el.addEventListener("change", debounced);
+      el.addEventListener("input", onInputChange);
+      el.addEventListener("change", onInputChange);
     });
+    checkEmployeeCap();
 
-    // Initial paint.
-    recalc();
-
-    // Explicit "See My Results" — fires email #2.
+    // Explicit "See my results" — computes, renders, fires email #2.
     const submit = $("[data-calc-submit]");
     submit.addEventListener("click", async () => {
       if (checkEmployeeCap()) return;
@@ -349,12 +411,14 @@
       render(inputs, outputs, { animate: true });
       persistInputs(inputs);
 
+      // Scroll the results into view on small screens.
+      if (window.matchMedia("(max-width: 1023px)").matches) {
+        results.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
       // Email #2.
       const lead = getLead();
-      if (!lead) {
-        // Shouldn't happen — calc is locked until gate cleared. Defensive.
-        return;
-      }
+      if (!lead) return; // defensive; gate is required before unlocking calculator
       submit.disabled = true;
       submit.textContent = "Saving";
       try {
@@ -375,6 +439,36 @@
         submit.textContent = "See my results";
       }
     });
+  }
+
+  // Currency input live-formatter: strips non-digits, inserts thousand-separators.
+  function setupCurrencyFormatters() {
+    $$('[data-format="currency"]').forEach((input) => {
+      input.addEventListener("input", () => {
+        const raw = input.value.replace(/[^0-9]/g, "");
+        if (!raw) { input.value = ""; return; }
+        // Preserve caret position approximately by tracking digit-only offset.
+        const caretBefore = input.selectionStart || 0;
+        const digitsBefore = countDigits(input.value.slice(0, caretBefore));
+        const formatted = Number(raw).toLocaleString("en-US");
+        input.value = formatted;
+        const newCaret = caretFromDigits(formatted, digitsBefore);
+        try { input.setSelectionRange(newCaret, newCaret); } catch (_) {}
+      });
+      input.addEventListener("blur", () => {
+        const raw = input.value.replace(/[^0-9]/g, "");
+        input.value = raw ? Number(raw).toLocaleString("en-US") : "";
+      });
+    });
+  }
+  function countDigits(s) { return (s.match(/\d/g) || []).length; }
+  function caretFromDigits(s, n) {
+    let count = 0;
+    for (let i = 0; i < s.length; i++) {
+      if (/\d/.test(s[i])) count++;
+      if (count >= n) return i + 1;
+    }
+    return s.length;
   }
 
   // ---------- reveal on scroll ----------

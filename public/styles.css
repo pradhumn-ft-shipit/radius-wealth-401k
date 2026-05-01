@@ -441,7 +441,7 @@ html.gate-cleared .calculator__inner { display: block; }
 .field label, .field__label {
   font-size: 0.9375rem; font-weight: 600; color: var(--text);
 }
-.field input[type="number"], .field input[type="text"] {
+.field input[type="number"], .field input[type="text"], .field input[type="email"] {
   font: inherit;
   padding: 12px 14px;
   border: 1px solid var(--line);
@@ -449,6 +449,35 @@ html.gate-cleared .calculator__inner { display: block; }
   background: #fff;
   color: var(--text);
   transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+  font-variant-numeric: tabular-nums;
+}
+
+.field__currency {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.field__currency-prefix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+  background: var(--bg-gray);
+  color: var(--text-soft);
+  font-weight: 600;
+}
+.field__currency input {
+  flex: 1;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  font-variant-numeric: tabular-nums;
+}
+.field__currency:focus-within .field__currency-prefix {
+  border-color: var(--green);
+  background: var(--green-tint);
+  color: var(--green);
 }
 .field input:focus {
   outline: none; border-color: var(--green);
@@ -515,6 +544,20 @@ html.gate-cleared .calculator__inner { display: block; }
 }
 .stat-card__note { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
 
+/* Empty state — when no results have been computed yet. */
+.calc-results[data-state="empty"] .calc-results__big { color: var(--text-muted); font-size: clamp(1.5rem, 3vw, 2rem); }
+.calc-results[data-state="empty"] .stat-card__value { color: var(--text-muted); }
+
+.calc-results__convenience {
+  margin: var(--space-5) 0 0;
+  padding: var(--space-4) var(--space-5);
+  background: var(--green-tint);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
 .calc-results__cta { margin-top: var(--space-5); }
 .calc-results__cta .btn { width: 100%; }
 .calc-results__cta .muted { font-size: 0.8125rem; margin-top: var(--space-3); }
@@ -535,6 +578,10 @@ html.gate-cleared .calculator__inner { display: block; }
 .team-card { display: grid; gap: var(--space-3); }
 .team-card img {
   width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+  /* Anchor portrait sources to the top so faces don't sit at the very top edge
+     of the cropped square — keeps faces near upper-third, aligned with the
+     already-square Nancy headshot. */
+  object-position: center top;
   border-radius: var(--radius-lg);
   background: var(--bg-gray);
   transition: transform 0.3s var(--ease);
