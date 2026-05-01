@@ -1,0 +1,9 @@
+# Copy to .dev.vars (gitignored) for local Resend email testing.
+# If RESEND_API_KEY is absent, the function logs the email body instead of sending.
+
+RESEND_API_KEY=
+LEAD_RECIPIENTS=
+TURNSTILE_SECRET=
+RESEND_FROM="Radius 401k Site <leads@radiuswealth401k.com>"
+CALENDLY_URL=https://calendly.com/radiuswealth401k/intro
+TURNSTILE_SITEKEY=

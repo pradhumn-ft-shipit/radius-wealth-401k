@@ -1,0 +1,14 @@
+{
+  "name": "radius401k-website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Marketing site for Radius Wealth 401(k) practice",
+  "scripts": {
+    "dev": "wrangler pages dev public --compatibility-date=2026-05-01 --port=8788",
+    "deploy": "wrangler pages deploy public --project-name=radius401k",
+    "optimize-images": "bash scripts/optimize-images.sh"
+  },
+  "devDependencies": {
+    "wrangler": "^3.80.0"
+  }
+}
