@@ -8,7 +8,9 @@
 //
 // Response: { ok: true } | { ok: false, error: string }
 
-const DEFAULT_RECIPIENT = "pradhumn@fasttrackr.ai";
+// Default primary recipient if no env override is set. Production should
+// either leave this default in place, or set LEAD_PRIMARY to override.
+const FALLBACK_PRIMARY_RECIPIENT = "pradhumn@fasttrackr.ai";
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 export async function onRequest(context) {
@@ -52,7 +54,7 @@ export async function onRequest(context) {
     if (!ok) return json({ ok: false, error: "turnstile_failed" }, 400);
   }
 
-  const recipients = buildRecipients(env.LEAD_RECIPIENTS);
+  const recipients = buildRecipients(env);
   const fromAddress = env.RESEND_FROM || "Radius 401k Site <onboarding@resend.dev>";
   const { subject, html, text } = composeEmail({ name, email, company, intent, source, calculatorData });
 
@@ -123,12 +125,13 @@ function isNonEmptyString(v) {
   return typeof v === "string" && v.trim().length > 0;
 }
 
-function buildRecipients(envList) {
-  const extras = (envList || "")
+function buildRecipients(env) {
+  const primary = (env.LEAD_PRIMARY || FALLBACK_PRIMARY_RECIPIENT).trim();
+  const extras = (env.LEAD_RECIPIENTS || "")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
-  const all = [DEFAULT_RECIPIENT, ...extras];
+  const all = [primary, ...extras];
   // De-dupe (case-insensitive).
   const seen = new Set();
   return all.filter((addr) => {

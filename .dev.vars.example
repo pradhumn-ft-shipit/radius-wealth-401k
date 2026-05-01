@@ -2,8 +2,15 @@
 # If RESEND_API_KEY is absent, the function logs the email body instead of sending.
 
 RESEND_API_KEY=
+# Primary recipient — defaults to pradhumn@fasttrackr.ai if unset.
+# Override locally if your Resend sending domain isn't verified yet
+# (Resend rejects sends to addresses other than the account owner's
+# until a domain is verified).
+LEAD_PRIMARY=
 LEAD_RECIPIENTS=
 TURNSTILE_SECRET=
-RESEND_FROM="Radius 401k Site <leads@radiuswealth401k.com>"
+# When sending from an unverified domain, use onboarding@resend.dev.
+# After verifying your sending domain, switch to a domain address.
+RESEND_FROM=onboarding@resend.dev
 CALENDLY_URL=https://calendly.com/radiuswealth401k/intro
 TURNSTILE_SITEKEY=

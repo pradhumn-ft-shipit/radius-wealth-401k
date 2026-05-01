@@ -31,3 +31,7 @@ Per spec §3, to avoid SEC Marketing Rule performance-projection scrutiny.
 ## 2026-05-01 — Email #2 fires on explicit "See My Results" click
 
 Live recalc happens on every input change (debounced 300ms) for UX, but the email only fires on an explicit user action, so we don't spam recipients with every keystroke.
+
+## 2026-05-01 — Primary recipient is env-driven (`LEAD_PRIMARY`)
+
+Resend rejects sends to any address other than the account owner's until a sending domain is verified. The Resend account here is owned by `christian@radiuswealth401k.com`, so during local dev (and any pre-domain-verification deploy), we route notifications to christian via `LEAD_PRIMARY=christian@radiuswealth401k.com`. After verifying `radiuswealth401k.com` in Resend and switching `RESEND_FROM` to a domain address, leave `LEAD_PRIMARY` unset to fall back to `pradhumn@fasttrackr.ai`, or set it explicitly to whichever email should be the primary.
