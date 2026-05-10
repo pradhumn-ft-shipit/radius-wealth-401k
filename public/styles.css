@@ -824,7 +824,9 @@ html.gate-cleared .calculator__inner { display: block; }
 .gate-form label > span {
   display: block; font-size: 0.8125rem; font-weight: 600; color: var(--text-soft); margin-bottom: 4px;
 }
-.gate-form input[type="text"], .gate-form input[type="email"] {
+.gate-form input[type="text"],
+.gate-form input[type="email"],
+.gate-form input[type="tel"] {
   width: 100%;
   padding: 11px 14px;
   font: inherit;
