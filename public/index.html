@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>401(k) for Small Businesses | Fee-Only Fiduciary Advisor | Radius Wealth Management</title>
-  <meta name="description" content="Fee-only 401(k) plan management for small businesses. We take care of everything — plan design, compliance, investments, and employee education.">
+  <meta name="description" content="Fee-only 401(k) plan management for small businesses. We take care of everything. Plan design, compliance, investments, and employee education.">
   <meta name="theme-color" content="#0F5F2E">
   <meta name="calendly-url" content="https://calendly.com/radiuswealthmanagement/60min?month=2026-04&amp;date=2026-04-29">
   <meta name="turnstile-sitekey" content="">
@@ -14,13 +14,13 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="/styles.css">
 
   <script>
     // Inline pre-paint: mark JS-ready so reveal animations can apply
-    // (graceful fallback if JS is disabled — content stays visible),
+    // (graceful fallback if JS is disabled. Content stays visible),
     // and apply gate-cleared class if a lead is already in sessionStorage.
     (function () {
       var de = document.documentElement;
@@ -39,7 +39,7 @@
 
 <header class="site-header" role="banner">
   <div class="container site-header__inner">
-    <a class="site-header__brand" href="/" aria-label="Radius Wealth Management — home">
+    <a class="site-header__brand" href="/" aria-label="Radius Wealth Management home">
       <img src="/assets/logo.png" alt="Radius Wealth Management" width="180" height="48" decoding="async">
     </a>
     <nav class="site-header__nav" aria-label="Primary">
@@ -54,14 +54,18 @@
 
 <main id="main">
 
-  <section class="hero" aria-labelledby="hero-heading">
+  <section class="hero hero--bleed" aria-labelledby="hero-heading">
+    <div class="hero__bg" aria-hidden="true">
+      <img src="/assets/img/hero.jpg" alt="" width="1600" height="900" fetchpriority="high" decoding="async">
+    </div>
+
     <div class="container hero__inner reveal-stagger">
       <p class="eyebrow">A 401(k) practice from Radius Wealth Management</p>
       <h1 id="hero-heading" class="display">
-        A Radius Wealth 401(k) — built to keep good people <em>without the hidden fees.</em>
+        Keep the good people, <br>lose the hidden fees, <br>with a better <strong>401(k)</strong>.
       </h1>
       <p class="lede">
-        We design and run retirement plans for small businesses, end-to-end. Plan setup, compliance, investments, employee education — we take care of all of it. Transparent, fee-only pricing. Fiduciary advice. And straight-talk guidance on the SECURE 2.0 tax credits that may cover most of your plan's cost in the first three years.
+        We design and run retirement plans for small businesses, end to end. Plan setup, compliance, investments, employee education. Transparent fee-only pricing, fiduciary advice, and SECURE 2.0 tax credits that may cover most of your plan's cost in the first three years.
       </p>
       <div class="cta-row">
         <button type="button" class="btn btn--primary" data-cta data-cta-intent="schedule" data-cta-source="hero-primary">
@@ -74,9 +78,19 @@
       <ul class="proof-points" aria-label="Why us">
         <li><span class="dot" aria-hidden="true"></span> Fee-only fiduciary</li>
         <li><span class="dot" aria-hidden="true"></span> 50+ years combined plan and investment experience</li>
-        <li><span class="dot" aria-hidden="true"></span> End-to-end service — we handle the moving parts</li>
+        <li><span class="dot" aria-hidden="true"></span> End-to-end service. We handle the moving parts</li>
       </ul>
     </div>
+
+    <a href="#problem-heading" class="hero__scroll" aria-label="Scroll to next section">
+      <svg viewBox="0 0 24 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="1" y="1" width="22" height="38" rx="11" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="12" r="2" fill="currentColor">
+          <animate attributeName="cy" values="10;22;10" dur="2.4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0;1" dur="2.4s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </a>
   </section>
 
   <section class="section section--gray reveal" aria-labelledby="problem-heading">
@@ -89,23 +103,35 @@
 
       <div class="problem-grid">
         <article class="problem-card">
+          <span class="problem-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-fees"/></svg>
+          </span>
           <h3>"I think we're overpaying for our current plan."</h3>
-          <p>You probably are. An independent industry study found that <strong>roughly 75% of small-business 401(k) plans pay hidden fees</strong> — revenue sharing, wrap charges, and asset-based admin fees buried in fund expenses.<sup><a href="#fn-1">1</a></sup> We'll benchmark what you're actually paying today and show you whether it's reasonable for your plan size.</p>
+          <p>You probably are. An independent industry study found that <strong>roughly 75% of small-business 401(k) plans pay hidden fees</strong>. Revenue sharing, wrap charges, and asset-based admin fees buried in fund expenses.<sup><a href="#fn-1">1</a></sup> We'll benchmark what you're actually paying today and show you whether it's reasonable for your plan size.</p>
         </article>
 
         <article class="problem-card">
+          <span class="problem-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-retention"/></svg>
+          </span>
           <h3>"My employees keep leaving for companies with better benefits."</h3>
-          <p>A workplace retirement plan is now table stakes for hiring and retention — especially for the under-40 talent that's hardest to keep. A well-designed 401(k) signals that you're investing in their future, not just renting their time.</p>
+          <p>A workplace retirement plan is now table stakes for hiring and retention. Especially for the under-40 talent that's hardest to keep. A well-designed 401(k) signals that you're investing in their future, not just renting their time.</p>
         </article>
 
         <article class="problem-card">
+          <span class="problem-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-cost"/></svg>
+          </span>
           <h3>"I've been told a 401(k) is too expensive for my company."</h3>
           <p>That advice is often years out of date. The SECURE Act 2.0 created tax credits that may cover <strong>up to $16,500</strong> of plan costs in the first three years for businesses with 50 or fewer employees. For many of our clients, the credits more than offset what they pay to run the plan.</p>
         </article>
 
         <article class="problem-card">
+          <span class="problem-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-compliance"/></svg>
+          </span>
           <h3>"I'm worried about compliance and personal liability."</h3>
-          <p>You should be — plan sponsors carry real fiduciary responsibility under ERISA. We serve as a co-fiduciary on the investment lineup, document the prudent process required by regulators, and coordinate with a third-party administrator on testing, filings, and notices. You stay informed; we handle the heavy lifting.</p>
+          <p>You should be. Plan sponsors carry real fiduciary responsibility under ERISA. We serve as a co-fiduciary on the investment lineup, document the prudent process required by regulators, and coordinate with a third-party administrator on testing, filings, and notices. You stay informed; we handle the heavy lifting.</p>
         </article>
       </div>
 
@@ -129,6 +155,9 @@
 
       <div class="two-col">
         <article class="block">
+          <span class="block__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-states"/></svg>
+          </span>
           <p class="tag">State retirement mandates</p>
           <h3>State retirement mandates are spreading fast.</h3>
           <p>Eighteen states (and counting) have now enacted laws requiring employers to either offer a qualified retirement plan or enroll workers in a state-run auto-IRA. Massachusetts joined the list in the FY2026 budget with its Secure Choice Savings Program; once implementation begins, employers with <strong>25 or more employees</strong> without a plan will be subject to the mandate.</p>
@@ -136,6 +165,9 @@
         </article>
 
         <article class="block">
+          <span class="block__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-credits"/></svg>
+          </span>
           <p class="tag">Federal tax incentives</p>
           <h3>The federal government is paying you to start a plan.</h3>
           <p>The SECURE Act 2.0 made small-business retirement plans dramatically more affordable. Eligible employers with 50 or fewer employees may qualify for tax credits covering <strong>up to 100% of plan startup costs</strong> for the first three years, plus additional credits for employer contributions and auto-enrollment features.</p>
@@ -153,11 +185,18 @@
 
   <section class="section section--gray reveal" aria-labelledby="credits-heading">
     <div class="container">
-      <p class="eyebrow">SECURE 2.0 tax credits</p>
-      <h2 id="credits-heading" class="display"><em>The credits that change the math.</em></h2>
-      <p class="lede lede--narrow">
-        For eligible small employers, three federal tax credits stack on top of one another. Eligibility depends on headcount, plan design, and employee compensation. We'll help you confirm which apply to your situation.
-      </p>
+      <div class="credits-head">
+        <div class="credits-head__copy">
+          <p class="eyebrow">SECURE 2.0 tax credits</p>
+          <h2 id="credits-heading" class="display"><em>The credits that change the math.</em></h2>
+          <p class="lede lede--narrow">
+            For eligible small employers, three federal tax credits stack on top of one another. Eligibility depends on headcount, plan design, and employee compensation. We'll help you confirm which apply to your situation.
+          </p>
+        </div>
+        <figure class="credits-head__visual" aria-hidden="true">
+          <img src="/assets/img/credits.jpg" alt="" width="1400" height="788" loading="lazy" decoding="async">
+        </figure>
+      </div>
 
       <div class="credits-table-wrap">
         <table class="credits-table">
@@ -215,22 +254,42 @@
 
       <div class="service-grid">
         <article class="service-card">
-          <p class="service-card__num">01</p>
+          <div class="service-card__head">
+            <p class="service-card__num">01</p>
+            <span class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-design"/></svg>
+            </span>
+          </div>
           <h3>Plan Design &amp; Setup</h3>
-          <p>We design the plan around your business — Safe Harbor, traditional 401(k), Roth, profit-sharing, or owner-only Solo 401(k). We benchmark your options against your goals (retention, tax efficiency, owner contribution maximization) and coordinate setup end-to-end with the recordkeeper and TPA.</p>
+          <p>We design the plan around your business. Safe Harbor, traditional 401(k), Roth, profit-sharing, or owner-only Solo 401(k). We benchmark your options against your goals (retention, tax efficiency, owner contribution maximization) and coordinate setup end-to-end with the recordkeeper and TPA.</p>
         </article>
         <article class="service-card">
-          <p class="service-card__num">02</p>
+          <div class="service-card__head">
+            <p class="service-card__num">02</p>
+            <span class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-admin"/></svg>
+            </span>
+          </div>
           <h3>Compliance &amp; Administration Support</h3>
           <p>We work alongside a third-party administrator on annual nondiscrimination testing, Form 5500 filings, required participant notices, and plan amendments. We document the fiduciary process you're required to follow under ERISA, so the paper trail exists if it's ever needed.</p>
         </article>
         <article class="service-card">
-          <p class="service-card__num">03</p>
+          <div class="service-card__head">
+            <p class="service-card__num">03</p>
+            <span class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-invest"/></svg>
+            </span>
+          </div>
           <h3>Investment Management</h3>
-          <p>Open-architecture, fee-only investment lineup. We select and monitor funds based on cost, performance, and suitability — without revenue-sharing arrangements that distort our recommendations. We meet with you to review the lineup at least annually and document the rationale.</p>
+          <p>Open-architecture, fee-only investment lineup. We select and monitor funds based on cost, performance, and suitability. Without revenue-sharing arrangements that distort our recommendations. We meet with you to review the lineup at least annually and document the rationale.</p>
         </article>
         <article class="service-card">
-          <p class="service-card__num">04</p>
+          <div class="service-card__head">
+            <p class="service-card__num">04</p>
+            <span class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-education"/></svg>
+            </span>
+          </div>
           <h3>Employee Education</h3>
           <p>A plan only works if employees use it. We run enrollment meetings, plain-language Q&amp;A sessions, and one-on-one consultations. Higher participation means a healthier plan, easier compliance testing, and a benefit your team actually values.</p>
         </article>
@@ -250,15 +309,18 @@
       <p class="eyebrow">See the numbers</p>
       <h2 id="calc-heading" class="display"><em>How much is your plan actually costing you?</em></h2>
       <p class="lede lede--narrow">
-        Most business owners can't answer that question — and that's by design. Plan fees are notoriously buried. Our analyzer estimates what you're paying today, what a transparent plan would cost, and what the SECURE 2.0 credits could mean for your bottom line.
+        Most business owners can't answer that question. And that's by design. Plan fees are notoriously buried. Our analyzer estimates what you're paying today, what a transparent plan would cost, and what the SECURE 2.0 credits could mean for your bottom line.
       </p>
 
       <div class="calculator" data-calculator>
         <div class="calculator__lock" data-calc-lock>
+          <span class="calculator__lock-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-invest"/></svg>
+          </span>
           <p class="calculator__lock-eyebrow">Quick step before the numbers</p>
           <p class="calculator__lock-title">Tell us who's running the analysis.</p>
           <p class="calculator__lock-body">
-            We share the calculator with you and notify our team so we can follow up with the answer that fits your specific plan. No spam — one call, no obligation.
+            We share the calculator with you and notify our team so we can follow up with the answer that fits your specific plan. No spam. One call, no obligation.
           </p>
           <button type="button" class="btn btn--primary" data-cta data-cta-intent="calculate" data-cta-source="calc-lock">
             Unlock the analyzer
@@ -304,7 +366,7 @@
               </div>
 
               <details class="field field--advanced">
-                <summary>Advanced — average employee compensation</summary>
+                <summary>Advanced. Average employee compensation</summary>
                 <div class="field" style="margin-top: 12px;">
                   <label for="calc-avgcomp">Average employee compensation (USD)</label>
                   <div class="field__currency">
@@ -322,29 +384,29 @@
 
             <aside class="calc-results" data-calc-results aria-live="polite" data-state="empty">
               <p class="calc-results__eyebrow" data-calc-eyebrow>Find your number</p>
-              <p class="calc-results__big" data-calc-output="annualSavings">—</p>
-              <p class="calc-results__sub" data-calc-edge>Fill in the fields and click <strong>See my results</strong> to estimate your savings — and the SECURE 2.0 credits you may qualify for.</p>
+              <p class="calc-results__big" data-calc-output="annualSavings">&hellip;</p>
+              <p class="calc-results__sub" data-calc-edge>Fill in the fields and click <strong>See my results</strong> to estimate your savings. And the SECURE 2.0 credits you may qualify for.</p>
 
               <div class="stat-cards">
                 <div class="stat-card">
                   <p class="stat-card__label">10-year cumulative savings</p>
-                  <p class="stat-card__value" data-calc-output="tenYearSavings">—</p>
+                  <p class="stat-card__value" data-calc-output="tenYearSavings">&hellip;</p>
                   <p class="stat-card__note">Flat extrapolation, not compounded.</p>
                 </div>
                 <div class="stat-card">
-                  <p class="stat-card__label">SECURE 2.0 credits — estimate</p>
-                  <p class="stat-card__value" data-calc-output="secure2CreditEstimate">—</p>
+                  <p class="stat-card__label">SECURE 2.0 credits. Estimate</p>
+                  <p class="stat-card__value" data-calc-output="secure2CreditEstimate">&hellip;</p>
                   <p class="stat-card__note">Eligibility depends on IRS rules.</p>
                 </div>
                 <div class="stat-card">
                   <p class="stat-card__label">Your fees today</p>
-                  <p class="stat-card__value" data-calc-output="currentFeeShare">—</p>
+                  <p class="stat-card__value" data-calc-output="currentFeeShare">&hellip;</p>
                   <p class="stat-card__note">Of plan assets, all-in.</p>
                 </div>
               </div>
 
               <p class="calc-results__convenience" data-calc-convenience hidden>
-                And the savings is only half the story — Radius runs the plan end-to-end: design, compliance, investment management, and employee education. One team, one point of contact, no software-and-a-phone-number routing.
+                And the savings is only half the story. Radius runs the plan end-to-end: design, compliance, investment management, and employee education. One team, one point of contact, no software-and-a-phone-number routing.
               </p>
 
               <div class="calc-results__cta">
@@ -374,7 +436,7 @@
       </div>
 
       <div class="below-calc">
-        <p>The numbers above are estimates based on industry averages. Your actual savings depend on your plan documents, your provider, and your business specifics. The fastest way to get a real answer is a 20-minute conversation — we'll review your current plan, identify what you're actually paying, and tell you honestly whether we can do better.</p>
+        <p>The numbers above are estimates based on industry averages. Your actual savings depend on your plan documents, your provider, and your business specifics. The fastest way to get a real answer is a 20-minute conversation. We'll review your current plan, identify what you're actually paying, and tell you honestly whether we can do better.</p>
       </div>
     </div>
   </section>
@@ -384,9 +446,14 @@
       <p class="eyebrow">Who you're working with</p>
       <h2 id="about-heading" class="display">A small, senior team. End-to-end accountability.</h2>
 
-      <div class="about-intro">
-        <p>Radius Wealth Management is a Boston-based Registered Investment Advisor founded by Nancy von Stackelberg, CFP®, who has spent 50+ years managing wealth — including more than 400 high-net-worth relationships during her time at Fidelity. We're a fee-only fiduciary, which means we're legally obligated to act in your interest, not the interest of a fund company or insurance carrier. We don't accept commissions. We don't get paid by the products we recommend.</p>
-        <p>For our 401(k) practice, that translates to plain-language advice, transparent pricing, and an open-architecture investment platform. When you call us, you talk to one of the three people on this page — not a call center.</p>
+      <div class="about-intro about-intro--with-visual">
+        <div class="about-intro__copy">
+          <p>Radius Wealth Management is a Boston-based Registered Investment Advisor founded by Nancy von Stackelberg, CFP®, who has spent 50+ years managing wealth. Including more than 400 high-net-worth relationships during her time at Fidelity. We're a fee-only fiduciary, which means we're legally obligated to act in your interest, not the interest of a fund company or insurance carrier. We don't accept commissions. We don't get paid by the products we recommend.</p>
+          <p>For our 401(k) practice, that translates to plain-language advice, transparent pricing, and an open-architecture investment platform. When you call us, you talk to one of the three people on this page. Not a call center.</p>
+        </div>
+        <figure class="about-intro__visual" aria-hidden="true">
+          <img src="/assets/img/service.jpg" alt="" width="1000" height="750" loading="lazy" decoding="async">
+        </figure>
       </div>
 
       <div class="team-grid">
@@ -394,42 +461,45 @@
           <img src="/assets/nancy.jpg" alt="Nancy von Stackelberg" width="320" height="320" loading="lazy" decoding="async">
           <h3>Nancy von Stackelberg, CFP®</h3>
           <p class="team-card__role">Principal &amp; Co-Founder</p>
-          <p>Nancy brings 50+ years of investment and financial services experience to Radius. Before founding the firm, she was a vice president and senior account executive at Fidelity, where she worked with more than 400 high-net-worth family relationships totaling more than $1.1 billion in assets. She has overseen plan structures, retirement and insurance needs, and investment management across her career — the foundation of how Radius approaches 401(k) plan sponsors today.</p>
+          <p>Nancy brings 50+ years of investment and financial services experience to Radius. Before founding the firm, she was a vice president and senior account executive at Fidelity, where she worked with more than 400 high-net-worth family relationships totaling more than $1.1 billion in assets. She has overseen plan structures, retirement and insurance needs, and investment management across her career. The foundation of how Radius approaches 401(k) plan sponsors today.</p>
         </article>
 
         <article class="team-card">
           <img src="/assets/christian.jpg" alt="Christian von Stackelberg" width="320" height="320" loading="lazy" decoding="async">
           <h3>Christian von Stackelberg, ChFC®</h3>
           <p class="team-card__role">Independent Investment Advisor &amp; Partner</p>
-          <p>Christian leads the day-to-day relationship with 401(k) plan sponsors. He brings nearly a decade of financial services experience and is a Chartered Financial Consultant (ChFC®). When he's not working with clients, he runs the firm's investment research, fund selection, trading, and portfolio management — meaning the same person designing the plan is the one monitoring the investments.</p>
+          <p>Christian leads the day-to-day relationship with 401(k) plan sponsors. He brings nearly a decade of financial services experience and is a Chartered Financial Consultant (ChFC®). When he's not working with clients, he runs the firm's investment research, fund selection, trading, and portfolio management. Meaning the same person designing the plan is the one monitoring the investments.</p>
         </article>
 
         <article class="team-card">
           <img src="/assets/cole.jpg" alt="Cole Brann" width="320" height="320" loading="lazy" decoding="async">
           <h3>Cole Brann</h3>
           <p class="team-card__role">Account Manager</p>
-          <p>Cole runs client service and back-office operations for the firm's 401(k) clients — onboarding, recordkeeper coordination, participant questions, and the day-to-day mechanics that make the plan run smoothly. A former varsity athlete at Northeastern with a bachelor's in Business Administration &amp; Communications and a master's in Project Management, Cole keeps everything moving and on schedule.</p>
+          <p>Cole runs client service and back-office operations for the firm's 401(k) clients. Onboarding, recordkeeper coordination, participant questions, and the day-to-day mechanics that make the plan run smoothly. A former varsity athlete at Northeastern with a bachelor's in Business Administration &amp; Communications and a master's in Project Management, Cole keeps everything moving and on schedule.</p>
         </article>
       </div>
 
       <div class="section-cta">
         <button type="button" class="btn btn--primary" data-cta data-cta-intent="schedule" data-cta-source="about">
-          Talk with us — find the right plan for your business
+          Talk with us. Find the right plan for your business
         </button>
       </div>
 
       <ul class="trust-signals" aria-label="Trust signals">
         <li>Registered Investment Advisor (RIA), Commonwealth of Massachusetts</li>
-        <li>Fee-only fiduciary — no commissions, no product sales</li>
+        <li>Fee-only fiduciary. No commissions, no product sales</li>
         <li>50+ years combined plan and investment experience</li>
         <li>Open-architecture investment platform</li>
         <li>Form CRS available</li>
-        <li>Form ADV Part 2 — Disclosure Brochure available on request</li>
+        <li>Form ADV Part 2. Disclosure Brochure available on request</li>
       </ul>
     </div>
   </section>
 
   <section class="section final-cta reveal" aria-labelledby="final-heading">
+    <div class="final-cta__bg" aria-hidden="true">
+      <img src="/assets/img/boston.jpg" alt="" width="1400" height="788" loading="lazy" decoding="async">
+    </div>
     <div class="container final-cta__inner">
       <p class="eyebrow">Next step</p>
       <h2 id="final-heading" class="display">Get a free 401(k) plan review.</h2>
@@ -438,9 +508,13 @@
       </p>
       <div class="cta-row cta-row--center">
         <button type="button" class="btn btn--primary" data-cta data-cta-intent="schedule" data-cta-source="final-cta">
+          <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-calendar"/></svg></span>
           Schedule a 30-minute plan review
         </button>
-        <a class="btn btn--secondary" href="tel:+16177652200">Or call 617-765-2200</a>
+        <a class="btn btn--secondary" href="tel:+16177652200">
+          <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="/assets/svg/icons.svg#i-phone"/></svg></span>
+          Or call 617-765-2200
+        </a>
       </div>
       <p class="muted">No sales pitch. No obligation. If we're not a fit, we'll tell you.</p>
     </div>

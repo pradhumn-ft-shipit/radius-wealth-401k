@@ -7,6 +7,7 @@
 - Built 401(k) Cost Analyzer per `Content/calculator-logic-new.md` (5 inputs, hedged outputs).
 - Inline-expand gate on both primary CTAs; sessionStorage persistence; calculator unlocked after gate.
 - Two-email notification flow: email #1 on gate submit, email #2 on calculator completion.
+- Visual layer: 4 Imagen-4-generated editorial photos (hero/boston/service/credits) + 12-symbol inline SVG icon sprite at `/assets/svg/icons.svg`. Hero split layout, problem/service/why-now icons, credits + about split-column visuals, Boston skyline final-CTA background.
 
 ## In progress
 - Local verification + visual polish.

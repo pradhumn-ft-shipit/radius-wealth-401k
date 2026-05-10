@@ -1,5 +1,5 @@
 /* =========================================================
-   Radius Wealth 401(k) — single-page JS.
+   Radius Wealth 401(k). Single-page JS.
    - Inline-expand gate on any [data-cta]
    - sessionStorage persistence
    - Calculator math (5 inputs) per Content/calculator-logic-new.md
@@ -18,7 +18,7 @@
   const TURNSTILE_SITEKEY = (document.querySelector('meta[name="turnstile-sitekey"]')?.content || "").trim();
   const CALENDLY_URL = (document.querySelector('meta[name="calendly-url"]')?.content || "").trim();
 
-  // Free / personal email providers — rejected to ensure work-email-only B2B leads.
+  // Free / personal email providers. Rejected to ensure work-email-only B2B leads.
   const FREE_EMAIL_DOMAINS = new Set([
     "gmail.com", "googlemail.com",
     "yahoo.com", "yahoo.co.uk", "yahoo.co.in", "ymail.com",
@@ -90,9 +90,20 @@
       const source = button.dataset.ctaSource || "unknown";
       const lead = getLead();
       if (lead) {
-        // Already cleared the gate — fire intent action directly.
+        // Already cleared the gate. Fire intent action directly.
         completeIntent(intent, source, lead, button);
         return;
+      }
+      // Header CTA: the inline form is too cramped in the sticky nav.
+      // Scroll to the final-CTA section and trigger its button instead.
+      if (source === "header") {
+        const target = document.querySelector('[data-cta-source="final-cta"]');
+        const finalSection = document.getElementById("final-cta") || target?.closest("section");
+        if (target) {
+          finalSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+          setTimeout(() => target.click(), 450);
+          return;
+        }
       }
       openGate(button, intent, source);
     });
@@ -136,7 +147,7 @@
         return;
       }
       if (isFreeEmail(email)) {
-        showError(errEl, "Please use your work email — gmail, yahoo, outlook etc. aren't accepted here.");
+        showError(errEl, "Please use your work email. Gmail, yahoo, outlook etc. aren't accepted here.");
         return;
       }
 
@@ -170,7 +181,7 @@
       } catch (err) {
         console.error("Gate submit failed:", err);
         const msg = err && err.message === "free_email_not_allowed"
-          ? "Please use your work email — gmail, yahoo, outlook etc. aren't accepted here."
+          ? "Please use your work email. Gmail, yahoo, outlook etc. aren't accepted here."
           : "Something went wrong. Please try again, or call us directly at 617-765-2200.";
         showError(errEl, msg);
         submitBtn.disabled = false;
@@ -256,12 +267,12 @@
   }
 
   function secure2Credits({ employees, hasPlan, avgComp }) {
-    // Per spec §4 — simplified, hedged estimate. Not advice.
+    // Per spec §4. Simplified, hedged estimate. Not advice.
     if (employees < 1) return 0;
 
     let total = 0;
 
-    // Startup credit — only for new plans, ≤100 employees.
+    // Startup credit. Only for new plans, ≤100 employees.
     if (!hasPlan && employees <= 100) {
       const startupRate = employees <= 50 ? 1.0 : 0.5;
       // Assume $4K/yr qualified costs, capped $5K/yr × 3 years.
@@ -269,10 +280,10 @@
       total += annualStartup * 3;
     }
 
-    // Auto-enrollment credit — assume the employer adopts auto-enroll (typical).
+    // Auto-enrollment credit. Assume the employer adopts auto-enroll (typical).
     total += 500 * 3;
 
-    // Contribution credit — for employees earning ≤$100K. Assume 70% of HC qualify
+    // Contribution credit. For employees earning ≤$100K. Assume 70% of HC qualify
     // unless avg comp suggests otherwise.
     const compFactor = avgComp <= 100000 ? 0.7 : Math.max(0, 0.7 * (100000 / Math.max(avgComp, 100000)));
     const eligibleEmployees = Math.min(50, employees) * compFactor;
@@ -313,14 +324,14 @@
 
     // Sub-line copy varies by case.
     if (outputs.hypotheticalAssets) {
-      sub.innerHTML = `For ${formatInt(inputs.employees)} employees, a typical small-business plan holds around <strong>${formatCurrency(outputs.hypotheticalAssets)}</strong> in assets at the industry-average fee. That's the baseline used here. The bigger number for you may be the SECURE 2.0 credits — see below.`;
+      sub.innerHTML = `For ${formatInt(inputs.employees)} employees, a typical small-business plan holds around <strong>${formatCurrency(outputs.hypotheticalAssets)}</strong> in assets at the industry-average fee. That's the baseline used here. The bigger number for you may be the SECURE 2.0 credits. See below.`;
     } else if (outputs.annualSavings <= 0 && inputs.planAssets > 0) {
-      sub.textContent = "Your current plan fees appear competitive against industry benchmarks. A formal review can confirm — and we can still help with plan design, compliance, and tax credits.";
+      sub.textContent = "Your current plan fees appear competitive against industry benchmarks. A formal review can confirm. And we can still help with plan design, compliance, and tax credits.";
     } else {
       sub.textContent = "Based on industry-average benchmarks and the inputs above. A formal review will confirm actual numbers.";
     }
 
-    // Convenience message — "savings + we run it for you."
+    // Convenience message. "savings + we run it for you."
     if (convenience) convenience.hidden = false;
   }
 
@@ -383,7 +394,7 @@
     restoreInputs();
     setupCurrencyFormatters();
 
-    // Whenever inputs change we just check the cap and persist for sessionStorage —
+    // Whenever inputs change we just check the cap and persist for sessionStorage 
     // results are NOT rendered until the user explicitly clicks "See my results".
     // This keeps the email #2 capture tied to an explicit action.
     const onInputChange = debounce(() => {
@@ -396,7 +407,7 @@
     });
     checkEmployeeCap();
 
-    // Explicit "See my results" — computes, renders, fires email #2.
+    // Explicit "See my results". Computes, renders, fires email #2.
     const submit = $("[data-calc-submit]");
     submit.addEventListener("click", async () => {
       if (checkEmployeeCap()) return;
@@ -500,6 +511,32 @@
     if (el) el.textContent = new Date().getFullYear();
   }
 
+  // ---------- header transparency over hero ----------
+
+  function setupHeaderScroll() {
+    const header = document.querySelector(".site-header");
+    const hero = document.querySelector(".hero");
+    if (!header || !hero) return;
+
+    const trigger = Math.max(0, hero.offsetHeight - header.offsetHeight - 24);
+    let ticking = false;
+
+    const update = () => {
+      const past = window.scrollY > trigger;
+      header.classList.toggle("is-scrolled", past);
+      ticking = false;
+    };
+
+    update();
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+  }
+
   // ---------- init ----------
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -507,5 +544,6 @@
     bindAllCtas();
     setupReveal();
     setupCalculator();
+    setupHeaderScroll();
   });
 })();
