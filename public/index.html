@@ -6,7 +6,7 @@
   <title>401(k) for Small Businesses | Fee-Only Fiduciary Advisor | Radius Wealth Management</title>
   <meta name="description" content="Fee-only 401(k) plan management for small businesses. We take care of everything. Plan design, compliance, investments, and employee education.">
   <meta name="theme-color" content="#0F5F2E">
-  <meta name="calendly-url" content="https://calendly.com/radiuswealthmanagement/60min?month=2026-04&amp;date=2026-04-29">
+  <meta name="booking-url" content="https://calendar.app.google/NNiiZGC1tEV49S2y7">
   <meta name="turnstile-sitekey" content="">
   <link rel="canonical" href="https://radiuswealth401k.com/">
   <link rel="icon" href="/favicon.ico" sizes="any">
@@ -575,10 +575,16 @@
         <input type="text" name="company" autocomplete="organization" required maxlength="200">
       </label>
     </div>
-    <label class="gate-form__row">
-      <span>Work email</span>
-      <input type="email" name="email" autocomplete="email" required maxlength="200" inputmode="email">
-    </label>
+    <div class="gate-form__row gate-form__row--two">
+      <label>
+        <span>Work email</span>
+        <input type="email" name="email" autocomplete="email" required maxlength="200" inputmode="email">
+      </label>
+      <label>
+        <span>Cell phone</span>
+        <input type="tel" name="phone" autocomplete="tel-national" required maxlength="20" inputmode="tel" placeholder="(555) 123-4567" data-phone-input>
+      </label>
+    </div>
     <label class="gate-form__honeypot" aria-hidden="true" tabindex="-1">
       Leave blank
       <input type="text" name="website" tabindex="-1" autocomplete="off">

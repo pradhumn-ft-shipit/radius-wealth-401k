@@ -15,8 +15,31 @@
   const RADIUS_FEE_PCT = 0.0065;          // TODO: confirm with Christian before launch
   const INDUSTRY_FEE_PCT = 0.0118;        // industry-average benchmark for $0-assets case
   const ASSETS_PER_EMPLOYEE_BENCHMARK = 50000; // rough industry estimate for hypothetical plan size
-  const TURNSTILE_SITEKEY = (document.querySelector('meta[name="turnstile-sitekey"]')?.content || "").trim();
-  const CALENDLY_URL = (document.querySelector('meta[name="calendly-url"]')?.content || "").trim();
+  // Public config is fetched from /api/config (sourced from Cloudflare env
+  // bindings) so the booking URL and Turnstile sitekey can be rotated
+  // without a redeploy. The meta tags serve as a static fallback.
+  const config = {
+    turnstileSitekey: (document.querySelector('meta[name="turnstile-sitekey"]')?.content || "").trim(),
+    bookingUrl: (
+      document.querySelector('meta[name="booking-url"]')?.content
+      || document.querySelector('meta[name="calendly-url"]')?.content
+      || ""
+    ).trim(),
+  };
+
+  async function loadConfig() {
+    try {
+      const res = await fetch("/api/config", { cache: "no-cache" });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.ok) {
+        if (data.bookingUrl) config.bookingUrl = data.bookingUrl;
+        if (data.turnstileSitekey) config.turnstileSitekey = data.turnstileSitekey;
+      }
+    } catch {
+      // Network/dev failure: keep meta-tag fallback values.
+    }
+  }
 
   // Free / personal email providers. Rejected to ensure work-email-only B2B leads.
   const FREE_EMAIL_DOMAINS = new Set([
@@ -62,16 +85,62 @@
     document.documentElement.classList.add("gate-cleared");
   };
 
-  // ---------- calendly redirect ----------
+  // ---------- booking redirect ----------
 
-  function calendlyHref(lead) {
-    if (!CALENDLY_URL) return "#";
-    if (!lead) return CALENDLY_URL;
-    const url = new URL(CALENDLY_URL);
+  function bookingHref(lead) {
+    if (!config.bookingUrl) return "#";
+    if (!lead) return config.bookingUrl;
+    // Calendly accepts name/email/a1 prefill via query string. Google
+    // Calendar appointment short-links (calendar.app.google) ignore them,
+    // so for those we just send the user to the raw URL.
+    if (!/calendly\.com/i.test(config.bookingUrl)) return config.bookingUrl;
+    const url = new URL(config.bookingUrl);
     if (lead.name) url.searchParams.set("name", lead.name);
     if (lead.email) url.searchParams.set("email", lead.email);
     if (lead.company) url.searchParams.set("a1", lead.company);
     return url.toString();
+  }
+
+  // ---------- US phone helpers ----------
+
+  // Normalize any input to digits-only, US format: drop leading "1", cap at 10.
+  function digitsUS(value) {
+    let d = String(value || "").replace(/\D/g, "");
+    if (d.length === 11 && d[0] === "1") d = d.slice(1);
+    return d.slice(0, 10);
+  }
+
+  // Format digits as (XXX) XXX-XXXX progressively as the user types.
+  function formatUSPhone(value) {
+    const d = digitsUS(value);
+    if (!d) return "";
+    if (d.length <= 3) return `(${d}`;
+    if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+    return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+  }
+
+  function isValidUSPhone(value) {
+    return digitsUS(value).length === 10;
+  }
+
+  // Server-friendly E.164: "+15551234567" — included as `phoneE164` in the
+  // payload so downstream tools (CRM, SMS, Sheets) get a canonical value.
+  function phoneE164(value) {
+    const d = digitsUS(value);
+    return d.length === 10 ? `+1${d}` : "";
+  }
+
+  // Auto-format an input as the user types.
+  function attachPhoneFormatter(input) {
+    if (!input || input.dataset.phoneBound === "1") return;
+    input.dataset.phoneBound = "1";
+    input.addEventListener("input", () => {
+      const formatted = formatUSPhone(input.value);
+      if (input.value !== formatted) input.value = formatted;
+    });
+    input.addEventListener("blur", () => {
+      input.value = formatUSPhone(input.value);
+    });
   }
 
   // ---------- gate ----------
@@ -122,6 +191,9 @@
     const firstInput = form.querySelector('input[name="name"]');
     setTimeout(() => firstInput?.focus(), 50);
 
+    // Wire US phone autoformatter on the cell field.
+    attachPhoneFormatter(form.querySelector('input[name="phone"]'));
+
     const cancelBtn = form.querySelector("[data-gate-cancel]");
     cancelBtn.addEventListener("click", () => {
       host.replaceWith(button);
@@ -136,10 +208,11 @@
       const name = (fd.get("name") || "").toString().trim();
       const email = (fd.get("email") || "").toString().trim();
       const company = (fd.get("company") || "").toString().trim();
+      const phoneRaw = (fd.get("phone") || "").toString().trim();
       const honeypot = (fd.get("website") || "").toString();
 
-      if (!name || !email || !company) {
-        showError(errEl, "Please fill in all three fields.");
+      if (!name || !email || !company || !phoneRaw) {
+        showError(errEl, "Please fill in all four fields.");
         return;
       }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -150,13 +223,19 @@
         showError(errEl, "Please use your work email. Gmail, yahoo, outlook etc. aren't accepted here.");
         return;
       }
+      if (!isValidUSPhone(phoneRaw)) {
+        showError(errEl, "Please enter a 10-digit US cell number, e.g. (555) 123-4567.");
+        return;
+      }
+      const phone = formatUSPhone(phoneRaw);
+      const phoneCanonical = phoneE164(phoneRaw);
 
       const submitBtn = form.querySelector('button[type="submit"]');
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending";
 
       let turnstileToken = "";
-      if (TURNSTILE_SITEKEY && window.turnstile) {
+      if (config.turnstileSitekey && window.turnstile) {
         try { turnstileToken = await getTurnstileToken(); } catch {}
       }
 
@@ -165,8 +244,8 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            name, email, company, intent, source,
-            honeypot, turnstileToken,
+            name, email, company, phone, phoneE164: phoneCanonical,
+            intent, source, honeypot, turnstileToken,
           }),
         });
         const data = await res.json().catch(() => ({}));
@@ -174,7 +253,7 @@
           throw new Error(data.error || "submit_failed");
         }
 
-        const lead = { name, email, company, gatedAt: Date.now() };
+        const lead = { name, email, company, phone, phoneE164: phoneCanonical, gatedAt: Date.now() };
         setLead(lead);
 
         completeIntent(intent, source, lead, button, host);
@@ -200,7 +279,7 @@
       document.body.appendChild(tmp);
       try {
         window.turnstile.render(tmp, {
-          sitekey: TURNSTILE_SITEKEY,
+          sitekey: config.turnstileSitekey,
           callback: (t) => { resolve(t); tmp.remove(); },
           "error-callback": () => { reject(new Error("turnstile")); tmp.remove(); },
         });
@@ -210,7 +289,7 @@
 
   function completeIntent(intent, source, lead, originalButton, host) {
     if (intent === "schedule") {
-      window.location.href = calendlyHref(lead);
+      window.location.href = bookingHref(lead);
       return;
     }
     if (intent === "calculate") {
@@ -545,5 +624,7 @@
     setupReveal();
     setupCalculator();
     setupHeaderScroll();
+    // Fire-and-forget; redirects use the latest cached value when ready.
+    loadConfig();
   });
 })();
