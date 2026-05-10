@@ -34,7 +34,7 @@ We design and run retirement plans for small businesses, end-to-end. Plan setup,
 
 **Hero proof points (small row beneath CTAs):**
 - Fee-only fiduciary
-- 50+ years combined plan and investment experience
+- 40+ years combined plan and investment experience
 - End-to-end service — we handle the moving parts
 
 ---
@@ -198,7 +198,7 @@ A small, senior team. End-to-end accountability.
 
 **Body copy (intro, full-width):**
 
-Radius Wealth Management is a Boston-based Registered Investment Advisor founded by Nancy von Stackelberg, CFP®, who has spent 50+ years managing wealth — including more than 400 high-net-worth relationships during her time at Fidelity. We're a fee-only fiduciary, which means we're legally obligated to act in your interest, not the interest of a fund company or insurance carrier. We don't accept commissions. We don't get paid by the products we recommend.
+Radius Wealth Management is a Boston-based Registered Investment Advisor co-founded by Nancy von Stackelberg, CFP®, who brings 35 years of investment and financial services experience — including more than 400 high-net-worth family relationships during her time at Fidelity. We're a fee-only fiduciary, which means we're legally obligated to act in your interest, not the interest of a fund company or insurance carrier. We don't accept commissions. We don't get paid by the products we recommend.
 
 For our 401(k) practice, that translates to plain-language advice, transparent pricing, and an open-architecture investment platform. When you call us, you talk to one of the three people on this page — not a call center.
 
@@ -211,7 +211,7 @@ For our 401(k) practice, that translates to plain-language advice, transparent p
 ### Nancy von Stackelberg, CFP®
 *Principal & Co-Founder*
 
-Nancy brings 50+ years of investment and financial services experience to Radius. Before founding the firm, she was a vice president and senior account executive at Fidelity, where she worked with more than 400 high-net-worth family relationships totaling more than $1.1 billion in assets. She has overseen plan structures, retirement and insurance needs, and investment management across her career — the foundation of how Radius approaches 401(k) plan sponsors today.
+Nancy brings 35 years of investment and financial services experience. She began her career at Merrill Lynch in 1972, and later served as a portfolio manager at Bainco International Investors, where she sat on the investment committee. At Fidelity, she was a vice president and senior account executive working with more than 400 high-net-worth family relationships totaling over $1.1 billion in assets. She subsequently spent more than five years as a vice president and portfolio manager at Fernwood Investment Management, focused on high-net-worth families. Across her career, Nancy has helped clients with asset allocation, financial planning, retirement, and insurance. She is a graduate of Colby-Sawyer College in New London, NH, holds a Series 66 license, and is a CERTIFIED FINANCIAL PLANNER™ practitioner.
 
 ---
 
@@ -220,7 +220,7 @@ Nancy brings 50+ years of investment and financial services experience to Radius
 ### Christian von Stackelberg, ChFC®
 *Independent Investment Advisor & Partner*
 
-Christian leads the day-to-day relationship with 401(k) plan sponsors. He brings nearly a decade of financial services experience and is a Chartered Financial Consultant (ChFC®). When he's not working with clients, he runs the firm's investment research, fund selection, trading, and portfolio management — meaning the same person designing the plan is the one monitoring the investments.
+Christian is a Registered Investment Advisor and partner at Radius, with over nine years of financial services experience. Working closely with clients, he offers independent investment advice, an open-architecture investment platform, and a high level of personalized service. When he's not with clients, he supports the firm's investment lineup research, fund selection, trading, and portfolio management. Christian passed his Series 65 and Series 1651 exams and is an SEC Registered Investment Advisor in the Commonwealth of Massachusetts. He is a Chartered Financial Consultant (ChFC®) and a licensed life insurance producer. Christian lives with his wife Sara in Arlington, Massachusetts.
 
 **[NOTE TO TEAM: When CRPS® designation is completed, update credentials to "Christian von Stackelberg, ChFC®, CRPS®." The CRPS® specifically signals retirement-plan expertise and meaningfully strengthens this section for plan-sponsor audiences.]**
 
@@ -231,7 +231,7 @@ Christian leads the day-to-day relationship with 401(k) plan sponsors. He brings
 ### Cole Brann
 *Account Manager*
 
-Cole runs client service and back-office operations for the firm's 401(k) clients — onboarding, recordkeeper coordination, participant questions, and the day-to-day mechanics that make the plan run smoothly. A former varsity athlete at Northeastern with a bachelor's in Business Administration & Communications and a master's in Project Management, Cole keeps everything moving and on schedule.
+Cole is an Account Manager focused on client relations and back-office operations. A former varsity athlete on Northeastern University's men's rowing team, he holds a bachelor's degree in Business Administration & Communications and a master's in Project Management from Northeastern's College of Professional Studies. Cole brings a leadership-driven, strategic mindset to supporting clients and streamlining the firm's operations.
 
 ---
 
@@ -243,7 +243,7 @@ Cole runs client service and back-office operations for the firm's 401(k) client
 
 - Registered Investment Advisor (RIA), Commonwealth of Massachusetts
 - Fee-only fiduciary — no commissions, no product sales
-- 50+ years combined plan and investment experience
+- 40+ years combined plan and investment experience
 - Open-architecture investment platform
 - Form CRS available
 - Form ADV Part 2 — Disclosure Brochure available on request
